@@ -9,9 +9,10 @@ export function generate(data: string, error_correction_level: ECC_LEVEL) {
 
     const codewords = generate_data_codewords(context)
 
-    // TODO: make it so that generate_data_codewords returns an array of integers
+    // TODO: make it so that generate_data_codewords returns a uint8array instead of a string
     const codewords_bits = bitStringToIntArray(codewords)
 
+    // TODO: make it so that Matrix accepts the context object and not individual properties
     const matrix = new Matrix(context.version, context.error_correction_level)
 
     matrix.add_data(codewords_bits)
