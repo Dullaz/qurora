@@ -161,8 +161,6 @@ export function evaluate_matrix(grid: Module[][]) {
 
     const total = rule_1 + rule_2 + rule_3 + rule_4
 
-    console.log(`rule 1: ${rule_1}, rule 2: ${rule_2}, rule 3: ${rule_3}, rule 4: ${rule_4}, total: ${total}`)
-
     return total
 }
 
