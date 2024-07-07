@@ -1,7 +1,7 @@
 import { evaluate_matrix } from "./qr";
 import { alignment_pattern, alignment_pattern_location_table, ec_bits_table, finder_pattern, format_information_table, mask_pattern, version_information_binary } from "./qr_table";
 import { ECC_LEVEL, QR_CONTEXT, QR_VERSION } from "./types";
-import { matrixToSvg } from "../utils/util";
+import { grid_to_svg } from "../utils/util";
 import * as fs from 'fs';
 
 
@@ -58,6 +58,7 @@ export class Matrix {
 
     mask: number;
     ec_level: ECC_LEVEL;
+    format_info: number;
 
     constructor(version: QR_VERSION, ec_level: ECC_LEVEL) {
         this.version = version
@@ -305,13 +306,18 @@ export class Matrix {
     public add_data(codewords: Uint8Array) {
 
         let best_grid: Module[][] = this.insert_codewords(codewords, mask_pattern[0])
+        this.add_format_information(best_grid, 0)
         let best_score = evaluate_matrix(best_grid);
         let best_mask = 0;
+
+        console.log("mask 0 score: " + best_score)
 
         for (let mask_i = 1; mask_i < 8; mask_i++) {
             const masked_grid = this.insert_codewords(codewords, mask_pattern[mask_i])
             this.add_format_information(masked_grid, mask_i)
             const score = evaluate_matrix(masked_grid)
+
+            console.log("mask " + mask_i + " score: " + score)
 
             if (score < best_score) {
                 best_score = score

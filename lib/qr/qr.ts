@@ -3,7 +3,7 @@ import { encode, get_encoding_mode } from "./qr_encode";
 import { ERROR_CORRECTION_COL, GROUP_1_BLOCKS, GROUP_1_DATA, GROUP_2_BLOCKS, GROUP_2_DATA, TOTAL_CODEWORDS_COL, alignment_pattern, alignment_pattern_location_table, finder_pattern, qr_table } from "./qr_table";
 import { rs_encode_message } from "../reed/rs";
 import { DATA_TYPE, ECC_LEVEL, QR_CONTEXT, QR_VERSION } from "./types";
-import { intArrayToBitString } from "../utils/util";
+import { int_array_to_bit_string } from "../utils/util";
 
 /**
  * Returns the context needed to create a QR code image.
@@ -110,7 +110,7 @@ export function generate_data_codewords(context: QR_CONTEXT) {
             const data_code_words = bit_stream.slice(start, end)
             const ecc_code_words = rs_encode_message(data_code_words, context.ec_block_len)
             data_blocks.push(data_code_words)
-            ec_blocks.push(intArrayToBitString(ecc_code_words))
+            ec_blocks.push(int_array_to_bit_string(ecc_code_words))
 
         }
     }
@@ -161,6 +161,8 @@ export function evaluate_matrix(grid: Module[][]) {
 
     const total = rule_1 + rule_2 + rule_3 + rule_4
 
+    console.log(`rule 1: ${rule_1}, rule 2: ${rule_2}, rule 3: ${rule_3}, rule 4: ${rule_4}, total: ${total}`)
+
     return total
 }
 
@@ -170,7 +172,7 @@ export function evaluate_matrix(grid: Module[][]) {
  * 
  * @param matrix QR code matrix
  */
-function evaluate_rule_one(grid: Module[][]): number {
+export function evaluate_rule_one(grid: Module[][]): number {
     const calculate_penalty = (line: Module[]): number => {
         let count = 1;
         let colour = line[0].value;
@@ -212,7 +214,7 @@ function evaluate_rule_one(grid: Module[][]): number {
  *
  * @param matrix QR code matrix
  */
-function evaluate_rule_two(grid: Module[][]): number {
+export function evaluate_rule_two(grid: Module[][]): number {
     let penalty = 0;
 
     for (let i = 0; i < grid.length - 1; i++) {
@@ -223,7 +225,7 @@ function evaluate_rule_two(grid: Module[][]): number {
             const bottom_right = grid[i + 1][j + 1].value;
 
             if (top_left === top_right && top_right === bottom_left && bottom_left === bottom_right) {
-                penalty += 3;
+                penalty += 1;
             }
         }
     }
@@ -238,7 +240,7 @@ function evaluate_rule_two(grid: Module[][]): number {
  * 
  * @param matrix 
  */
-function evaluate_rule_three(grid: Module[][]): number {
+export function evaluate_rule_three(grid: Module[][]): number {
     const FINDER_PATTERN = [1, 0, 1, 1, 1, 0, 1];
     const WHITE_PATTERN = [0, 0, 0, 0];
     const BEFORE_PATTERN = WHITE_PATTERN.concat(FINDER_PATTERN);
@@ -250,7 +252,7 @@ function evaluate_rule_three(grid: Module[][]): number {
     const assess_segment = (segment: Module[]): number => {
         let count = 0
 
-        for (let i = 0; i < segment.length - PATTERN_LENGTH; i++) {
+        for (let i = 0; i <= segment.length - PATTERN_LENGTH; i++) {
             const pattern = segment.slice(i, i + PATTERN_LENGTH)
 
             if (pattern.every((v, i) => v.value === BEFORE_PATTERN[i])) {
@@ -282,13 +284,13 @@ function evaluate_rule_three(grid: Module[][]): number {
  * 
  * @param matrix QR code matrix
  */
-function evaluate_rule_four(grid: Module[][]): number {
+export function evaluate_rule_four(grid: Module[][]): number {
     const total_modules = grid.length * grid.length;
     const dark_modules = grid.flat().reduce((acc, val) => acc + val.value, 0);
-    const ratio = dark_modules / total_modules;
-    const deviation = Math.abs(ratio - 0.5) * 2;
 
-    return deviation * 10;
+    const ratio = dark_modules / total_modules;
+    const deviation = Math.floor(Math.abs(ratio - 0.5) / 0.05)
+    return deviation * 10
 }
 
 

@@ -1,4 +1,6 @@
 import { Module } from "../qr/matrix";
+import * as fs from 'fs';
+
 
 export function split_into_groups(data: string, group_size: number) {
     const groups: string[] = [];
@@ -22,50 +24,29 @@ export function divide_into_groups(data: string, group_size: number) {
     return result;
 }
 
-export function intArrayToBitString(arr: Uint8Array): string[] {
+export function int_array_to_bit_string(arr: Uint8Array): string[] {
     return Array.from(arr, byte => byte.toString(2).padStart(8, '0'))
 }
 
-export function bitStringToIntArray(str: string): Uint8Array {
+export function bit_string_to_int_array(str: string): Uint8Array {
     return Uint8Array.from(str.split('').map(bit => parseInt(bit, 2)))
 }   
 
 export async function pretty_print_matrix(grid: Module[][]) {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-
-            switch (grid[i][j].location) {
-                case "finder":
-                    process.stdout.write('f ')
-                    break;
-                case "timing":
-                    process.stdout.write('t ')
-                    break;
-                case "alignment":
-                    process.stdout.write('a ')
-                    break;
-                case "dark":
-                    process.stdout.write('q ')
-                    break;
-                case "format":
-                    process.stdout.write('x ')
-                    break;
-                case "version":
-                    process.stdout.write('v ')
-                    break;
-                case "data":
-                    process.stdout.write('d ')
-                    break;
-                default:
-                    process.stdout.write('᛭ ')
-                    break;
-            }
+            process.stdout.write(grid[i][j].value + ' ')
         }
         process.stdout.write('\n')
     }
 }
 
-export function matrixToSvg(matrix: Module[][]) {
+export function save_grid(grid: Module[][], filename: string) {
+    const svg = grid_to_svg(grid)
+    fs.writeFileSync(filename, svg)
+}
+
+export function grid_to_svg(matrix: Module[][]) {
     let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${matrix.length * 10}" height="${matrix.length * 10}">`
     const scale = 10
     for (let i = 0; i < matrix.length; i++) {

@@ -4,8 +4,8 @@ import { expect, test } from 'vitest'
 import { generate_data_codewords, get_qr_context } from '../lib/qr/qr'
 import { ALPHANUMERIC, BYTE, NUMERIC } from '../lib/qr/types'
 import { Matrix, Module } from '../lib/qr/matrix'
-import { finder_pattern } from '../lib/qr/qr_table'
-import { bitStringToIntArray } from '../lib/utils/util'
+import { finder_pattern, mask_pattern } from '../lib/qr/qr_table'
+import { bit_string_to_int_array, grid_to_svg, save_grid } from '../lib/utils/util'
 
 test('given numeric data, context is numeric', () => {
     const data = "1234567890"
@@ -58,7 +58,41 @@ test('given data, code words are generated', () => {
     )
 })
 
-test('matrix generation is correct', () => {
+test('matrix format information is added correctly', () => {
+
+    const matrixObj = new Matrix(1, 'M')
+    matrixObj.add_format_information(matrixObj.grid, 2)
+
+    const format_info = bit_string_to_int_array("101111001111100").reverse()
+
+    const actual: number[] = []
+
+    actual.push(matrixObj.grid[0][8].value)
+    actual.push(matrixObj.grid[1][8].value)
+    actual.push(matrixObj.grid[2][8].value)
+    actual.push(matrixObj.grid[3][8].value)
+    actual.push(matrixObj.grid[4][8].value)
+    actual.push(matrixObj.grid[5][8].value)
+    //actual.push(matrixObj.grid[6][8].value)
+    actual.push(matrixObj.grid[7][8].value)
+    actual.push(matrixObj.grid[8][8].value)
+
+    actual.push(matrixObj.grid[8][7].value)
+    //actual.push(matrixObj.grid[8][6].value)
+    actual.push(matrixObj.grid[8][5].value)
+    actual.push(matrixObj.grid[8][4].value)
+    actual.push(matrixObj.grid[8][3].value)
+    actual.push(matrixObj.grid[8][2].value)
+    actual.push(matrixObj.grid[8][1].value)
+    actual.push(matrixObj.grid[8][0].value)
+    
+    const actual_string = actual.join('')
+    const expected_string = format_info.join('')
+
+    expect(actual_string).toEqual(expected_string)
+})
+
+test('matrix generation is correct for 01234567-M', () => {
 
     const data = "01234567"
     const context = get_qr_context(data, 'M')
@@ -67,14 +101,29 @@ test('matrix generation is correct', () => {
     const expected = "00010000 00100000 00001100 01010110 01100001 10000000 11101100 00010001 11101100 00010001 11101100 00010001 11101100 00010001 11101100 00010001 10100101 00100100 11010100 1100000111101101 00110110 1100011110000111 00101100 01010101".replace(/ /g, '')
     expect(expected).toEqual(codewords)
 
-    const codewords_bits = bitStringToIntArray(codewords)
+    const codewords_bits = bit_string_to_int_array(codewords)
 
     const matrixObj = new Matrix(context.version, context.error_correction_level)
     matrixObj.add_data(codewords_bits)
 
     // we should expect finder patterns, alignment patterns, timing patterns, and dark module
     // to be set in the matrix
-    
+    assert_functional_patterns(matrixObj)
+
+    // expect mask to be correct
+    expect(matrixObj.mask).toEqual(0)
+
+    // load sample
+    const expected_json = fs.readFileSync('./tests/samples/01234567-M.json', 'utf8')
+
+    // compare the two matrices
+    const actual_json = JSON.stringify(matrixObj, null, 2)
+
+    expect(actual_json).toEqual(expected_json)
+
+})
+
+function assert_functional_patterns(matrixObj: Matrix) {
     // finder patterns
     expect_finder_patterns(matrixObj.grid)
 
@@ -83,19 +132,7 @@ test('matrix generation is correct', () => {
 
     // timing patterns
     expect_timing_patterns(matrixObj)
-
-    // expect mask to be correct
-    expect(matrixObj.mask).toEqual(2)
-
-    // load sample
-    const expected_json = fs.readFileSync('./tests/samples/01234567.json', 'utf8')
-
-    // compare the two matrices
-    const actual_json = JSON.stringify(matrixObj, null, 2)
-
-    expect(actual_json).toEqual(expected_json)
-
-})
+}
 
 function expect_timing_patterns(matrixObj: Matrix) {
 
