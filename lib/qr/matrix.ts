@@ -310,14 +310,10 @@ export class Matrix {
         let best_score = evaluate_matrix(best_grid);
         let best_mask = 0;
 
-        console.log("mask 0 score: " + best_score)
-
         for (let mask_i = 1; mask_i < 8; mask_i++) {
             const masked_grid = this.insert_codewords(codewords, mask_pattern[mask_i])
             this.add_format_information(masked_grid, mask_i)
             const score = evaluate_matrix(masked_grid)
-
-            console.log("mask " + mask_i + " score: " + score)
 
             if (score < best_score) {
                 best_score = score
