@@ -1,0 +1,32 @@
+{
+  "name": "qurora",
+  "version": "1.0.0",
+  "description": "QR Code Generator",
+  "main": "./lib/index.ts",
+  "scripts": {
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dullaz/qurora.git"
+  },
+  "keywords": [
+    "qr",
+    "code",
+    "generator",
+    "typescript",
+    "library",
+    "edge",
+    "lightweight"
+  ],
+  "author": "Dullaz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dullaz/qurora/issues"
+  },
+  "homepage": "https://github.com/Dullaz/qurora#readme",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "vitest": "^1.6.0"
+  }
+}
