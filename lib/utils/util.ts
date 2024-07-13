@@ -46,9 +46,13 @@ export function save_grid(grid: Module[][], filename: string) {
     fs.writeFileSync(filename, svg)
 }
 
-export function grid_to_svg(matrix: Module[][]) {
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${matrix.length * 10}" height="${matrix.length * 10}">`
-    const scale = 10
+export interface SVGOptions {
+    module_size: number,
+}
+
+export function grid_to_svg(matrix: Module[][], options: SVGOptions ={module_size: 10}) {
+    const scale = options.module_size
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${matrix.length * scale}" height="${matrix.length * scale}">`
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
             if(matrix[i][j].value === 1) {

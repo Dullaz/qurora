@@ -1,7 +1,7 @@
 import { Matrix } from "./qr/matrix";
 import { generate_data_codewords, get_qr_context } from "./qr/qr";
 import { ECC_LEVEL } from "./qr/types";
-import { bit_string_to_int_array, grid_to_svg } from "./utils/util";
+import { bit_string_to_int_array, grid_to_svg, SVGOptions } from "./utils/util";
 
 export function generate(data: string, error_correction_level: ECC_LEVEL) {
 
@@ -28,11 +28,11 @@ export function generate(data: string, error_correction_level: ECC_LEVEL) {
  * @param error_correction_level error correction level (L, M, Q, H)
  * @returns SVG image as a string
  */
-export function sync_svg(data: string, error_correction_level: ECC_LEVEL) {
+export function sync_svg(data: string, error_correction_level: ECC_LEVEL, options: SVGOptions) {
 
     const grid = generate(data, error_correction_level)
 
-    const svg = grid_to_svg(grid)
+    const svg = grid_to_svg(grid, options)
 
     return svg
 }
