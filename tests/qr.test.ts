@@ -4,8 +4,8 @@ import { expect, test } from 'vitest'
 import { generate_data_codewords, get_qr_context } from '../lib/qr/qr'
 import { ALPHANUMERIC, BYTE, NUMERIC } from '../lib/qr/types'
 import { Matrix, Module } from '../lib/qr/matrix'
-import { finder_pattern, mask_pattern } from '../lib/qr/qr_table'
-import { bit_string_to_int_array, grid_to_svg, save_grid } from '../lib/utils/util'
+import { finder_pattern } from '../lib/qr/qr_table'
+import { bit_string_to_int_array } from '../lib/utils/util'
 
 test('given numeric data, context is numeric', () => {
     const data = "1234567890"

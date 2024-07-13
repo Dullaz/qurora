@@ -1,9 +1,6 @@
 import { evaluate_matrix } from "./qr";
 import { alignment_pattern, alignment_pattern_location_table, ec_bits_table, finder_pattern, format_information_table, mask_pattern, version_information_binary } from "./qr_table";
-import { ECC_LEVEL, QR_CONTEXT, QR_VERSION } from "./types";
-import { grid_to_svg } from "../utils/util";
-import * as fs from 'fs';
-
+import { ECC_LEVEL, QR_VERSION } from "./types";
 
 export type QR_LOCATION = "finder" | "alignment" | "timing" | "version" | "format" | "dark" | "data"
 

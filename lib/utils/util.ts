@@ -1,6 +1,4 @@
 import { Module } from "../qr/matrix";
-import * as fs from 'fs';
-
 
 export function split_into_groups(data: string, group_size: number) {
     const groups: string[] = [];
@@ -39,11 +37,6 @@ export async function pretty_print_matrix(grid: Module[][]) {
         }
         process.stdout.write('\n')
     }
-}
-
-export function save_grid(grid: Module[][], filename: string) {
-    const svg = grid_to_svg(grid)
-    fs.writeFileSync(filename, svg)
 }
 
 export interface SVGOptions {
