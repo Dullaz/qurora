@@ -53,9 +53,9 @@ export class Matrix {
     version: QR_VERSION;
     grid: Module[][];
 
-    mask: number;
+    mask: number = 0;
     ec_level: ECC_LEVEL;
-    format_info: number;
+    format_info: number = 0;
 
     constructor(version: QR_VERSION, ec_level: ECC_LEVEL) {
         this.version = version
