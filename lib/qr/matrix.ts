@@ -213,9 +213,9 @@ export class Matrix {
 
     public insert_codewords(
         codewords: Uint8Array,
-        mask: (x: number, y: number) => boolean = (x, y) => false
+        mask: (x: number, y: number) => boolean = () => false
     ) {
-        let temp_grid = this.grid.map(row => row.map(module => module.copy()))
+        const temp_grid = this.grid.map(row => row.map(module => module.copy()))
         const size = this.size
         let codeword_index = 0
         let is_upwards = false

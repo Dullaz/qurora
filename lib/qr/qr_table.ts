@@ -388,14 +388,15 @@ export const version_information_binary = {
  * 
  */
 export const mask_pattern = {
-    0: function (i, j) { return (i + j) % 2 === 0; },
-    1: function (i, j) { return i % 2 === 0; },
-    2: function (i, j) { return j % 3 === 0; },
-    3: function (i, j) { return (i + j) % 3 === 0; },
-    4: function (i, j) { return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0; },
-    5: function (i, j) { return (i * j) % 2 + (i * j) % 3 === 0; },
-    6: function (i, j) { return ((i * j) % 2 + (i * j) % 3) % 2 === 0; },
-    7: function (i, j) { return ((i + j) % 2 + (i * j) % 3) % 2 === 0; }
+    0: function (i: number, j: number) { return (i + j) % 2 === 0; },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    1: function (i: number, _: number) { return i % 2 === 0; },
+    2: function (_: number, j: number) { return j % 3 === 0; },
+    3: function (i: number, j: number) { return (i + j) % 3 === 0; },
+    4: function (i: number, j: number) { return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0; },
+    5: function (i: number, j: number) { return (i * j) % 2 + (i * j) % 3 === 0; },
+    6: function (i: number, j: number) { return ((i * j) % 2 + (i * j) % 3) % 2 === 0; },
+    7: function (i: number, j: number) { return ((i + j) % 2 + (i * j) % 3) % 2 === 0; }
 };
 
 export const ec_bits_table = {

@@ -34,7 +34,7 @@ test('generator polynomial is generated correctly', () => {
 
 test('reed solomon encoder', () => {
     // "hello" in binary = 0110100001100101011011000110110001101111
-    let data = ["01101000", "01100101", "01101100", "01101100", "01101111"]
+    const data = ["01101000", "01100101", "01101100", "01101100", "01101111"]
     const error_codewords = 10
 
     const expected_output = Uint8Array.from([169,117,16,53,134,36,116,82,77,82])

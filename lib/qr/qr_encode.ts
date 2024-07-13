@@ -58,9 +58,9 @@ function encode_numeric(data: string) {
 
 function encode_alphanumeric(data: string) {
 
-    var upper_case_data = data.toUpperCase()
+    const upper_case_data = data.toUpperCase()
 
-    var data_as_binary = split_into_groups(upper_case_data, 2)
+    const data_as_binary = split_into_groups(upper_case_data, 2)
         .flatMap(group => {
 
             if (group.length === 1) {
@@ -70,7 +70,7 @@ function encode_alphanumeric(data: string) {
             const first_char = group[0]
             const second_char = group[1]
 
-            var group_value = alphanumeric_lookup_table[first_char] * 45
+            let group_value = alphanumeric_lookup_table[first_char] * 45
             group_value += alphanumeric_lookup_table[second_char]
 
             return group_value.toString(2).padStart(11, '0')
@@ -92,7 +92,7 @@ function pad_bit_stream(input_stream: string, bits_to_prepend: string, data_bits
 
     let final_bit_stream = bits_to_prepend + input_stream
 
-    let remaining_bits = data_bits_length - final_bit_stream.length
+    const remaining_bits = data_bits_length - final_bit_stream.length
 
     if (remaining_bits < 0) 
         throw new Error("Data too long to encode")

@@ -11,11 +11,11 @@ export function split_into_groups(data: string, group_size: number) {
 export function divide_into_groups(data: string, group_size: number) {
     const result: string[] = [];
     const blockSize = Math.floor(data.length / group_size);
-    let remainder = data.length % group_size;
+    const remainder = data.length % group_size;
 
     for (let i = 0; i < group_size; i++) {
-        let end = (i + 1) * blockSize + Math.min(i + 1, remainder);
-        let start = i * blockSize + Math.min(i, remainder);
+        const end = (i + 1) * blockSize + Math.min(i + 1, remainder);
+        const start = i * blockSize + Math.min(i, remainder);
         result.push(data.slice(start, end));
     }
 

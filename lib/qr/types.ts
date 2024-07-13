@@ -29,6 +29,7 @@ export const ALPHANUMERIC: DATA_TYPE = {
 
 export const BYTE: DATA_TYPE = {
     name: "BYTE",
+    // eslint-disable-next-line no-control-regex
     regex: /^[\x00-\xff]*$/,
     table_column: BYTE_COL,
     encoding_mode: 0b0100

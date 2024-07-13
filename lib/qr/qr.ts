@@ -1,8 +1,8 @@
 import { Module } from "./matrix";
 import { encode, get_encoding_mode } from "./qr_encode";
-import { ERROR_CORRECTION_COL, GROUP_1_BLOCKS, GROUP_1_DATA, GROUP_2_BLOCKS, GROUP_2_DATA, TOTAL_CODEWORDS_COL, alignment_pattern, alignment_pattern_location_table, finder_pattern, qr_table } from "./qr_table";
+import { ERROR_CORRECTION_COL, GROUP_1_BLOCKS, GROUP_1_DATA, GROUP_2_BLOCKS, GROUP_2_DATA, TOTAL_CODEWORDS_COL, qr_table } from "./qr_table";
 import { rs_encode_message } from "../reed/rs";
-import { DATA_TYPE, ECC_LEVEL, QR_CONTEXT, QR_VERSION } from "./types";
+import { DATA_TYPE, ECC_LEVEL, QR_CONTEXT } from "./types";
 import { int_array_to_bit_string } from "../utils/util";
 
 /**
@@ -142,7 +142,7 @@ export function generate_data_codewords(context: QR_CONTEXT) {
         }
     }
 
-    let final_bit_stream_str = final_bit_stream.join('')
+    const final_bit_stream_str = final_bit_stream.join('')
 
     return final_bit_stream_str
 }

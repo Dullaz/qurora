@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest'
 import { Module } from '../lib/qr/matrix'
 import { evaluate_rule_three } from '../lib/qr/qr'
-import { pretty_print_matrix } from '../lib/utils/util'
 
 test('rule 3 evaluation of a perfect matrix', () => {
 
