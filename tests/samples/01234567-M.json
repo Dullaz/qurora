@@ -2,6 +2,8 @@
   "version": 1,
   "size": 21,
   "ec_level": "M",
+  "mask": 0,
+  "format_info": 0,
   "grid": [
     [
       {
@@ -2691,6 +2693,5 @@
         "location": "data"
       }
     ]
-  ],
-  "mask": 0
+  ]
 }

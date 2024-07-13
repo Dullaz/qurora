@@ -53,14 +53,16 @@ export class Matrix {
     version: QR_VERSION;
     grid: Module[][];
 
-    mask: number = 0;
+    mask: number;
     ec_level: ECC_LEVEL;
-    format_info: number = 0;
+    format_info: number;
 
     constructor(version: QR_VERSION, ec_level: ECC_LEVEL) {
         this.version = version
         this.size = version * 4 + 17
         this.ec_level = ec_level
+        this.mask = 0
+        this.format_info = 0
 
         this.grid = Array.from(Array(this.size), (_, k) => {
             return Array.from(Array(this.size), (_, i) => new Module(i, k, 0))

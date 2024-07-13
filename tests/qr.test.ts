@@ -120,7 +120,6 @@ test('matrix generation is correct for 01234567-M', () => {
     const actual_json = JSON.stringify(matrixObj, null, 2)
 
     expect(actual_json).toEqual(expected_json)
-
 })
 
 function assert_functional_patterns(matrixObj: Matrix) {
