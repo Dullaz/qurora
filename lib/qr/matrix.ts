@@ -181,7 +181,7 @@ export class Matrix {
                 // check if we are going to overlap with the finder patterns
                 for (let fx = x; fx < x + 5; fx++) {
                     for (let fy = y; fy < y + 5; fy++) {
-                        if(grid[fy][fx].location !== undefined) {
+                        if(grid[fy][fx].location === "finder") {
                             continue alignment_loop
                         }
                     }
