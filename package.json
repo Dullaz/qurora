@@ -2,7 +2,11 @@
   "name": "qurora",
   "version": "1.0.5",
   "description": "QR Code Generator",
-  "main": "./lib/qurora.ts",
+  "main": "./dist/qurora.js",
+  "types": "./dist/qurora.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest"
   },
