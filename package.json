@@ -1,6 +1,6 @@
 {
   "name": "qurora",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "QR Code Generator",
   "main": "./lib/qurora.ts",
   "scripts": {
