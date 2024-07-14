@@ -42,10 +42,12 @@ export function get_version_info(
     data_type: DATA_TYPE, 
     error_correction: ECC_LEVEL) {
 
+    const version_section = qr_table[error_correction];
+
+
     let version;
     let info;
 
-    const version_section = qr_table[error_correction];
 
     // find the smallest version that can fit the data
     for (let i = 0; i < version_section.length; i++) {
@@ -57,7 +59,7 @@ export function get_version_info(
     }
 
     // TODO: check max length before the loop
-    if (!version) {
+    if (!version || !info) {
         throw new Error("Data too long to encode");
     }
 

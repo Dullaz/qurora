@@ -346,7 +346,7 @@ export const alignment_pattern_location_table: { [version: number]: number[] } =
  * The table contains the binary representation of the version information encoded with (18,3) Golay code
  * This is complicated as fuck (for me anyway), so I prefer to store every possible value in a table
  */
-export const version_information_binary = {
+export const version_information_binary: { [key: number]: number[] } = {
     7: [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0],
     8: [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0],
     9: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0],
@@ -387,7 +387,8 @@ export const version_information_binary = {
  * Data mask patterns
  * 
  */
-export const mask_pattern = {
+export type MaskPatternFunction = (i: number, j: number) => boolean; 
+export const mask_pattern: { [key: number]: MaskPatternFunction } = {
     0: function (i: number, j: number) { return (i + j) % 2 === 0; },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     1: function (i: number, _: number) { return i % 2 === 0; },
