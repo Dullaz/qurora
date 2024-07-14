@@ -190,6 +190,9 @@ export class Matrix {
                 // place the pattern
                 for (let row = 0; row < 5; row++) {
                     for (let col = 0; col < 5; col++) {
+                        if (grid[y + row][x + col].location === "timing") {
+                            grid[y + row][x + col].location = "alignment"
+                        }
                         grid[y + row][x + col].set(alignment_pattern[row][col], "alignment")
                     }
                 }

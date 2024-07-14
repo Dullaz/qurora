@@ -4,7 +4,7 @@ import { expect, test } from 'vitest'
 import { generate_data_codewords, get_qr_context } from '../lib/qr/qr'
 import { ALPHANUMERIC, BYTE, NUMERIC } from '../lib/qr/types'
 import { Matrix, Module } from '../lib/qr/matrix'
-import { finder_pattern } from '../lib/qr/qr_table'
+import { alignment_pattern, alignment_pattern_location_table, finder_pattern } from '../lib/qr/qr_table'
 import { bit_string_to_int_array } from '../lib/utils/util'
 
 test('given numeric data, context is numeric', () => {
@@ -115,11 +115,25 @@ test('matrix generation is correct for 01234567-M', () => {
 
     // load sample
     const expected_json = fs.readFileSync('./tests/samples/01234567-M.json', 'utf8')
+    const expected_obj = JSON.parse(expected_json) as Matrix
 
     // compare the two matrices
-    const actual_json = JSON.stringify(matrixObj, null, 2)
+    expect(matrixObj).toEqual(expected_obj)
+})
 
-    expect(actual_json).toEqual(expected_json)
+test('matrix generation is correct for large data', () => {
+
+    const data = "A".repeat(1000)
+    const context = get_qr_context(data, 'M')
+    const codewords = generate_data_codewords(context)
+    const codewords_bits = bit_string_to_int_array(codewords)
+
+    const matrixObj = new Matrix(context.version, context.error_correction_level)
+    matrixObj.add_data(codewords_bits)
+
+    // we should expect finder patterns, alignment patterns, timing patterns, and dark module
+    // to be set in the matrix
+    assert_functional_patterns(matrixObj)
 })
 
 function assert_functional_patterns(matrixObj: Matrix) {
@@ -131,6 +145,9 @@ function assert_functional_patterns(matrixObj: Matrix) {
 
     // timing patterns
     expect_timing_patterns(matrixObj)
+
+    // alignment patterns
+    expect_alignment_patterns(matrixObj)
 }
 
 function expect_timing_patterns(matrixObj: Matrix) {
@@ -162,4 +179,38 @@ function check_finder_pattern(grid: Module[][], x: number, y: number) {
             expect(grid[y + i][x + j].value).toEqual(finder_pattern[i][j])
         }
     }
+}
+
+function expect_alignment_patterns(matrixObj: Matrix) {
+
+    const version = matrixObj.version
+    const alignment_pattern_locations = alignment_pattern_location_table[version]
+
+    for (let i = 0; i < alignment_pattern_locations.length; i++) {
+        for (let j = 0; j < alignment_pattern_locations.length; j++) {
+
+            // skip if we are in a finder pattern
+            const x = alignment_pattern_locations[i] - 2
+            const y = alignment_pattern_locations[j] - 2
+
+            if (is_finder_pattern(matrixObj, x, y)) continue
+
+            for (let row = 0; row < 5; row++) {
+                for (let col = 0; col < 5; col++) {
+                    expect(matrixObj.grid[y + row][x + col].value).toEqual(alignment_pattern[row][col])
+                }
+            }
+        }
+    }
+}
+
+function is_finder_pattern(matrixObj: Matrix, x: number, y: number) {
+    for (let fx = x; fx < x + 5; fx++) {
+        for (let fy = y; fy < y + 5; fy++) {
+            if (matrixObj.grid[fy][fx].location === "finder") {
+                return true
+            }
+        }
+    }
+    return false
 }
