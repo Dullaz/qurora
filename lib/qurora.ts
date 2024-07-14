@@ -3,6 +3,8 @@ import { generate_data_codewords, get_qr_context } from "./qr/qr";
 import { ECC_LEVEL } from "./qr/types";
 import { bit_string_to_int_array, grid_to_svg, SVGOptions } from "./utils/util";
 
+export * as QRTypes from "./qr/types";
+
 export function generate(data: string, error_correction_level: ECC_LEVEL) {
 
     const context = get_qr_context(data, error_correction_level)
