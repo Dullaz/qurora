@@ -1,6 +1,6 @@
 {
   "name": "qurora",
-  "version": "1.1.4",
+  "version": "1.1.6",
   "description": "QR Code Generator",
   "main": "./dist/qurora.js",
   "types": "./dist/qurora.d.ts",
@@ -8,7 +8,9 @@
     "dist"
   ],
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "build:": "npx tsc",
+    "publish": "npx tsc && npm publish"
   },
   "repository": {
     "type": "git",
